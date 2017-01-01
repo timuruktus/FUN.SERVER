@@ -9,9 +9,11 @@ import java.net.Socket;
 
 public class CitiesWeb {
 
+    public static int CITY_DB_VERSION = 101;
+
     public static void main(String[] args) {
-      /* Если аргументы отсутствуют, порт принимает значение поумолчанию */
         int port = 7705;
+
       /* Создаем серверный сокет на полученном порту */
         ServerSocket serverSocket = null;
         try {
@@ -33,7 +35,6 @@ public class CitiesWeb {
             } catch (IOException e) {
                 System.out.println("Failed to establish connection.");
                 System.out.println(e.getMessage());
-                System.exit(-1);
             }
         }
     }
