@@ -1,13 +1,11 @@
 package ru.timuruktus.DataBase;
 
 
-import ru.timuruktus.WebModules.CitiesWeb;
-
 import java.sql.*;
+import java.util.ArrayList;
 
 public class CityDataBase implements DataBaseHelper {
     Connection con;
-
 
     @Override
     public void createConnection(String database, String name, String password) {
@@ -15,7 +13,7 @@ public class CityDataBase implements DataBaseHelper {
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Driver loading success!");
             String url = "jdbc:mysql://localhost/" + database;
-            Connection con = DriverManager.getConnection(url, name, password);
+            con = DriverManager.getConnection(url, name, password);
         } catch (Exception e) { e.printStackTrace(); }
     }
 
@@ -28,25 +26,27 @@ public class CityDataBase implements DataBaseHelper {
         }
     }
 
-    @Override
-    public Object getResult() {
-        return getCitiesFromDB();
-    }
-
-    private String getCitiesFromDB(){
-        createConnection("cities","timuruktus","3628022000Usateh");
-        String result = null;
+    public String[] getCitiesFromDB(){
+        ArrayList<String> citiesArray = new ArrayList<>();
+        createConnection("cities", "timuruktus", "3628022000Usateh");
         try {
             Statement st = con.createStatement();
             String sqlCommand = "select * from cities";
             ResultSet rs = st.executeQuery(sqlCommand);
-            result = "" + CitiesWeb.CITY_DB_VERSION + ".";
-            while(rs.next()){
-                result += rs.getString("city") + ".";
+            while (rs.next()){
+                System.out.println(rs.getString("city"));
+                citiesArray.add(rs.getString("city"));
             }
-        }catch (Exception ex){ ex.printStackTrace(); }
-        closeConnection();
-        return result;
+            String[] cities = new String[citiesArray.size()];
+            for(int i = 0; i < citiesArray.size(); i++){
+                cities[i] = citiesArray.get(i);
+            }
+            closeConnection();
+            return cities;
+        } catch (Exception ex) {ex.printStackTrace();}
+        System.out.println("NULL");
+        return null;
+
     }
 
 

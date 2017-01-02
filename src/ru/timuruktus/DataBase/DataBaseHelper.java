@@ -9,7 +9,7 @@ public interface DataBaseHelper {
 
     abstract public void createConnection(String database, String name, String password);
     abstract public void closeConnection();
-    abstract public Object getResult();
+
 
 
 }
