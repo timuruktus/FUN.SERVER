@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public class Session implements Runnable {
     protected Socket socket = null;
-    private volatile boolean isActive = true;
+    private boolean isActive = true;
     Cities cities;
 
     public Session(Socket socket, Cities cities) throws IOException {
@@ -23,27 +23,25 @@ public class Session implements Runnable {
             try {
                 System.out.println("New Session Thread was created!");
                 ObjectInputStream  input = new ObjectInputStream (socket.getInputStream());
+                System.out.println("FIRST STEP");
                 ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-                long time = System.currentTimeMillis();
-                while (input.readObject() == null){
-                    System.out.println("null");
-                }
-                if((String)input.readObject() == "CITIES"){
+                System.out.println("SECOND STEP");
+                if(input.readUTF().equals("CITIES")){
                     System.out.println("input == CITIES");
                     output.writeObject(cities);
                     output.flush();
+                } else if(input.readUTF().equals("EXIT")){
+                    stopThread();
                 }
                 output.close();
                 input.close();
                 socket.close();
-                System.out.println("Request processed: " + time);
+                cities = null;
                 stopThread();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.err.println("IOException");
-            }catch (ClassNotFoundException ex){
-                ex.printStackTrace();
-                System.err.println("ClassNotFoundException");
+                System.err.println("THIS IS IOException");
+                stopThread();
             }
         }
     }

@@ -36,8 +36,10 @@ public class Starter {
                 }
             /* Для обработки запроса от каждого клиента создается
              * отдельный объект и отдельный поток */
+                System.out.println("Start");
                 Session session = new Session(clientSocket, cities);
                 new Thread(session).start();
+                clientSocket = null;
             } catch (IOException e) {
                 System.out.println("Failed to establish connection.");
                 System.out.println(e.getMessage());
