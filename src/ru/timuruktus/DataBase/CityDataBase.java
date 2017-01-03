@@ -28,7 +28,7 @@ public class CityDataBase implements DataBaseHelper {
 
     public String[] getCitiesFromDB(){
         ArrayList<String> citiesArray = new ArrayList<>();
-        createConnection("cities", "timuruktus", "3628022000Usateh");
+        createConnection("cities", "timuruktus", "admin");
         try {
             Statement st = con.createStatement();
             String sqlCommand = "select * from cities";
